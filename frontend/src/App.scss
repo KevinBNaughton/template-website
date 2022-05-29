@@ -1,0 +1,79 @@
+*{ box-sizing: border-box}
+
+
+$breakpoints: (
+	mobile: 348px,
+	laptop: 786px,
+	desktop: 1224px
+);
+
+$media: (
+	mobile: '(min-width: #{map-get($breakpoints, mobile)}) and (max-width: #{map-get($breakpoints, laptop) - 1})',
+	laptop: '(min-width: #{map-get($breakpoints, laptop)}) and (max-width: #{map-get($breakpoints, desktop) - 1})',
+	desktop: '(min-width: #{map-get($breakpoints, desktop)})',
+);
+
+@function remove-px($var) {
+  @return $var / 1px - 1;
+}
+
+:export {
+	breakpointMobile: remove-px(map-get($breakpoints, mobile));
+	breakpointLaptop: remove-px(map-get($breakpoints, laptop));
+	breakpointDesktop: remove-px(map-get($breakpoints, desktop));
+}
+
+@mixin media($width) {
+	@if $width == $breakpoint-mobile {
+		@media only screen and #{unquote(map-get($media, mobile))} {
+			@content;
+	  }
+	}
+	@else if $width == $breakpoint-laptop {
+		@media only screen and #{unquote(map-get($media, laptop))}  {
+			@content;
+	  }
+	}
+	@else if $width == $breakpoint-desktop {
+		@media only screen and #{unquote(map-get($media, desktop))}  {
+			@content;
+	  }
+	}
+	@else {
+		@error "$width is not in range for @mixin media($width)";
+	}
+}
+
+#main {
+    background: 'rgb(245 245 245)';
+    height: '100vh';
+    width: '100vw';
+    overflow-y: 'hidden';
+}
+
+.display-flex {
+  display: flex;
+}
+
+.space-around {
+	@extend .display-flex;
+	justify-content: space-around;
+}
+
+.space-between {
+	@extend .display-flex;
+	justify-content: space-between;
+}
+
+.justify-content-center {
+	@extend .display-flex;
+	justify-content: center;
+}
+
+.margin-right-small {
+    margin-right: 5px;
+}
+
+.margin-right {
+    margin-right: 10px;
+}
